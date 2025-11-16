@@ -1,0 +1,83 @@
+:root{
+	--max-width: 980px;
+	--accent: #0b6efd;
+	--muted: #666;
+}
+body { font-family: system-ui, Arial; margin:0; padding: 0; color:#222; background:#fafafa }
+.container { max-width: var(--max-width); margin: 0 auto; padding: 20px }
+.site-header { background: #fff; border-bottom:1px solid #eee }
+.site-header .container { display:flex; align-items:center; gap:16px }
+.site-header h1 { font-size:20px; margin:12px 0 }
+.site-header nav { margin-left:auto }
+.site-header nav a { margin-left:12px; color:var(--accent); text-decoration:none }
+.site-header nav button { margin-left:12px; background:transparent; border:0; color:var(--accent); font-weight:600; cursor:pointer }
+.site-header nav button[aria-current='true']{ text-decoration:underline }
+
+/* Admin styles */
+.admin-sidebar { background:#fafcff; border-right:1px solid #eee; min-height:400px }
+.admin-wrap .panel { background:#fff }
+.admin-sidebar button { font-size:14px }
+
+/* Listview dark table */
+.listview-wrap { background:#0f1720; padding:18px; border-radius:8px; color:#dbe6f3 }
+.listview-controls { display:flex; gap:10px; align-items:center; margin-bottom:12px; flex-wrap:wrap }
+.listview-controls .search { flex:1; min-width:220px; padding:10px; border-radius:8px; border:1px solid #22303a; background:#0b1216; color:#e6eef8 }
+.listview-controls input[type=date], .listview-controls select { padding:8px; border-radius:8px; border:1px solid #22303a; background:#0b1216; color:#e6eef8 }
+.listview-controls .btn-primary { background:#0b84ff; color:#fff; border:0; padding:8px 12px; border-radius:6px; cursor:pointer }
+.table-wrap { overflow:auto; border-radius:6px }
+.list-table { width:100%; border-collapse:collapse; min-width:1100px }
+.list-table thead th { text-align:left; padding:10px 12px; background:#08121a; color:#9fb5cf; font-size:13px; border-bottom:1px solid #12202a }
+.list-table tbody td { padding:12px; border-bottom:1px solid #0b1a21; color:#dbe6f3; font-size:14px }
+.list-table tbody tr:nth-child(even) td { background:rgba(255,255,255,0.01) }
+.list-table .caps { text-transform:uppercase; font-weight:700; font-size:12px; color:#a6d1ff }
+.badge { padding:6px 8px; border-radius:999px; font-size:12px; display:inline-block }
+.status-in-progress { background:#ffd98a; color:#2b1f00 }
+.status-completed { background:#b7f0c6; color:#06320a }
+.status-pending { background:#ffd0d0; color:#4a0b0b }
+.list-table button { margin-right:6px; padding:6px 8px; border-radius:6px; border:0; cursor:pointer }
+.list-table button:nth-child(1) { background:transparent; color:#9fc7ff }
+.list-table button:nth-child(2) { background:#0b84ff; color:#fff }
+.list-table button:nth-child(3) { background:#ff4d4f; color:#fff }
+
+@media (max-width:900px){
+	.listview-controls { flex-direction:column; align-items:stretch }
+	.list-table { min-width:800px }
+}
+
+
+.app { }
+.panel { margin: 16px 0; padding: 16px; background:#fff; border: 1px solid #eee; border-radius: 8px }
+form label { display:block; margin-top:8px; font-size:13px }
+form input { display:block; margin:6px 0; padding:10px; width:100%; max-width:720px; font-size:14px; border:1px solid #ddd; border-radius:6px }
+button { padding:10px 14px; background:var(--accent); color:#fff; border:none; border-radius:6px; cursor:pointer }
+button[disabled] { opacity:0.6; cursor:default }
+ul { list-style:none; padding:0 }
+li { margin: 8px 0 }
+.customer { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:8px; border-bottom:1px solid #f0f0f0 }
+.customer .info { flex:1 }
+.customer .meta { color:var(--muted); font-size:13px }
+.qr img { width:80px; height:80px; object-fit:contain; border-radius:6px; background:#fff }
+
+.repair-form { margin-top:10px; padding:8px; background:#fbfbfb; border:1px solid #eee; border-radius:6px }
+.repair-form label { font-size:13px; margin-top:6px }
+.repair-form textarea { width:100%; max-width:640px; padding:8px; border:1px solid #ddd; border-radius:6px }
+.repair-form select { padding:8px; border-radius:6px; border:1px solid #ddd }
+.repair-form button { padding:8px 10px }
+
+/* toast */
+.toast { position:fixed; right:20px; bottom:20px; z-index:9999 }
+.toast-inner { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:8px; color:#fff }
+.toast.info .toast-inner { background:#333 }
+.toast.success .toast-inner { background: #198754 }
+.toast.error .toast-inner { background: #d9534f }
+.toast button { background:transparent; color:inherit; border:0; font-size:14px; cursor:pointer }
+
+/* responsive */
+@media (max-width:720px){
+	.site-header .container { flex-direction:column; align-items:flex-start }
+	.site-header nav { margin-left:0 }
+	.qr img { width:56px; height:56px }
+	.container { padding:12px }
+	form input { max-width:100% }
+}
+
