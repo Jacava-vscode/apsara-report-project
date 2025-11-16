@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const customerRoutes = require('./routes/customerRoutes');
+const repairRoutes = require('./routes/repairRoutes');
 
 const app = express();
 app.use(cors());
@@ -21,6 +22,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/apsara_repo
 });
 
 app.use('/api/customers', customerRoutes);
+app.use('/api/repairs', repairRoutes);
 
 app.get('/', (req, res) => res.send({ ok: true, message: 'Apsara Report API' }));
 

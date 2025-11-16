@@ -1,0 +1,231 @@
+openapi: 3.0.3
+info:
+  title: Apsara Report - Equipment API (partial)
+  version: 1.0.0
+  description: OpenAPI snippet for the equipment list and bulk actions used by the List View.
+
+paths:
+  /api/equipment:
+    get:
+      summary: List equipment (paged, filterable)
+      tags: [Equipment]
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          description: Global search term (name, serial, assignedTo, etc.)
+        - in: query
+          name: type
+          schema:
+            type: string
+          description: Filter by equipment type (Computer, Printer, etc.)
+        - in: query
+          name: status
+          schema:
+            type: string
+          description: Filter by status (active, archived, offline, decommissioned)
+        - in: query
+          name: location
+          schema:
+            type: string
+          description: Location filter
+        - in: query
+          name: cluster
+          schema:
+            type: string
+          description: Cluster identifier
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: Sort expressions, e.g. lastSeen:desc or name:asc
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 25
+          description: Page size
+        - in: query
+          name: cursor
+          schema:
+            type: string
+          description: Cursor token for cursor-based pagination
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Page number (offset-style paging fallback)
+      responses:
+        '200':
+          description: A list of equipment records and paging metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentListResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/equipment/bulk:
+    post:
+      summary: Apply an action to multiple equipment records
+      tags: [Equipment]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkActionRequest'
+      responses:
+        '200':
+          description: Bulk action result summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkActionResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Equipment:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        host:
+          type: string
+        equipmentType:
+          type: string
+        serialNumber:
+          type: string
+        assignedTo:
+          type: string
+          nullable: true
+        location:
+          type: string
+        cluster:
+          type: string
+        lastSeen:
+          type: string
+          format: date-time
+        status:
+          type: string
+          description: one of (active, archived, offline, decommissioned)
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        thumbnail:
+          type: string
+          description: data URL or image path (optional)
+
+    EquipmentListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Equipment'
+        meta:
+          type: object
+          properties:
+            cursor:
+              type: string
+              nullable: true
+            page:
+              type: integer
+              nullable: true
+            total:
+              type: integer
+              nullable: true
+
+    BulkActionRequest:
+      type: object
+      required: [action, ids]
+      properties:
+        action:
+          type: string
+          description: archive | delete | assign | other
+        ids:
+          type: array
+          items:
+            type: string
+        payload:
+          type: object
+          description: optional extra payload (e.g., assign target)
+
+    BulkActionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              ok:
+                type: boolean
+              error:
+                type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+
+examples:
+  getEquipmentExample:
+    summary: Example response for GET /api/equipment
+    value:
+      success: true
+      data:
+        - id: "6123a8c1e8a4f1b2c3d4ef01"
+          name: "Front Desk Printer"
+          host: "PRN-01"
+          equipmentType: "Printer"
+          serialNumber: "VGUK294699"
+          assignedTo: ""
+          location: "Reception"
+          cluster: "activeCluster"
+          lastSeen: "2025-11-15T10:23:00Z"
+          status: "active"
+          createdAt: "2025-10-01T09:00:00Z"
+          updatedAt: "2025-11-15T10:23:00Z"
+      meta:
+        cursor: "eyJ2IjoiMSIsIm9mZnNldCI6MjV9"
+        total: 1234
+
+  bulkActionExample:
+    summary: Example request for POST /api/equipment/bulk
+    value:
+      action: "archive"
+      ids:
+        - "6123a8c1e8a4f1b2c3d4ef01"
+        - "6123a8c1e8a4f1b2c3d4ef02"
